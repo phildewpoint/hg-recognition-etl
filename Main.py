@@ -10,18 +10,26 @@ today = datetime.date.today()
 
 
 def launch(button):
+    # add error handling for missing values
+    if app.getEntry(name="dir_msg_box") == "":
+        app.errorBox(title="ERROR: Missing Critical information", message="Please select a directory before continuing")
+    if app.getEntry("Client Key") == "":
+        app.errorBox(title="ERROR: Missing Critical information", message="Please enter an API key before continuing.")
     if button == "Quit":
         quit()
     # get file location
     else:
         # initialize variables and create file
         file_name = "RecognitionFile"
-        file_dir = app.directoryBox(title="dir_msg_box")
+        file_dir = app.getEntry(name="dir_msg_box")
         file = create_file(file_name=file_name, file_dir=file_dir)
+        # get date values
+        start_date = app.getDatePicker("dp_start")
+        end_date = app.getDatePicker("dp_end")
         # get API key
         client_key = app.getLabel(name="Client Key")
         # launch functions to manage APIs and writing into file
-        rec_etl(file=file, client_key=client_key)
+        rec_etl(file=file, client_key=client_key, start=start_date, end=end_date)
 
 
 def create_gui():
