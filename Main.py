@@ -11,12 +11,13 @@ today = datetime.date.today()
 
 def launch(button):
     # add error handling for missing values
-    if app.getEntry(name="dir_msg_box") == "":
-        app.errorBox(title="ERROR: Missing Critical information", message="Please select a directory before continuing")
-    if app.getEntry("Client Key") == "":
-        app.errorBox(title="ERROR: Missing Critical information", message="Please enter an API key before continuing.")
     if button == "Quit":
-        quit()
+        app.stop()
+    # if the value doesn't exit (False) fire this warning
+    elif not app.getEntry(name="dir_msg_box"):
+        app.errorBox(title="ERROR: Missing Critical information", message="Please select a directory before continuing")
+    elif not app.getEntry("Client Key"):
+        app.errorBox(title="ERROR: Missing Critical information", message="Please enter an API key before continuing.")
     # get file location
     else:
         # initialize variables and create file
