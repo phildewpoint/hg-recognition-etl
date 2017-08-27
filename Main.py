@@ -1,10 +1,12 @@
 from appJar import gui
 from FileCreation import create_file
 from recETL import rec_etl
+import datetime
 init_buttons = [
     "Continue",
     "Quit"
 ]
+today = datetime.date.today()
 
 
 def launch(button):
@@ -23,10 +25,33 @@ def launch(button):
 
 
 def create_gui():
+    # text variables to populate messages
     msg = "This utility will create two recognition files. \nOne for givers and one for receivers."
+    key_msg = "Add your client or API key."
     dir_msg = "Select the directory for where you'll store the recognition file."
+    date_msg = "Select the start and stop dates to extract recognitions."
+    app.setLabelFont(size="14")
+    # Header message
     app.addLabel(title="label_box", text=msg)
+    app.addHorizontalSeparator()
+    # API key box
+    app.addLabel(title="key_label", text=key_msg)
     app.addLabelEntry(title="Client Key")
+    app.addHorizontalSeparator()
+    # date picker boxes
+    app.addLabel(title="date_label", text=date_msg)
+    app.startLabelFrame(title="Start Date")
+    app.addDatePicker(name="dp_start")
+    app.setDatePickerRange(title="dp_start", startYear=(today.year - 1), endYear=today.year)
+    app.setDatePicker(title="dp_start", date=today)
+    app.stopLabelFrame()
+    app.startLabelFrame(title="End Date")
+    app.addDatePicker(name="dp_end")
+    app.setDatePickerRange(title="dp_end", startYear=(today.year - 1), endYear=today.year)
+    app.setDatePicker(title="dp_end", date=today)
+    app.stopLabelFrame()
+    app.addHorizontalSeparator()
+    # directory picker box
     app.addLabel(title="dir_label", text=dir_msg)
     app.addDirectoryEntry(title="dir_msg_box")
     app.addHorizontalSeparator()
@@ -38,5 +63,5 @@ def create_gui():
 
 
 # Create the GUI as a global
-app = gui(title="Recognition Extract Utility", geom="265x125")
+app = gui(title="Recognition Extract Utility")
 create_gui()
